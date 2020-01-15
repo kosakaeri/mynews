@@ -6,12 +6,9 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix'=>'admin'],function() {
-  Route::get('news/create', 'Admin\NewsController@add');
+Route::get('news/create', 'Admin\NewsController@add');
 });
 
-//課題３　「http://XXXXXX.jp/XXX というアクセスが来たときに、 AAAControllerのbbbというAction に渡すRoutingの設定」を書いてみてください。
-
-//【応用】 前章でAdmin/ProfileControllerを作成し、add Action, edit Actionを追加しました。web.phpを編集して、admin/profile/create にアクセスしたら ProfileController の add Action に、admin/profile/edit にアクセスしたら ProfileController の edit Action に割り当てるように設定してください。
 
 Route::get('admin/profile/create','Admin\ProfileController@add')->middleware('auth');
 Route::post('admin/profile/create','Admin\ProfileController@create')->middleware('auth');
@@ -30,3 +27,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
      Route::post('news/create', 'Admin\NewsController@create');
 });
 
+Route::group(['prefix' => 'admin'], function() {
+    Route::get('news/create', 'Admin\NewsController@add')->middleware('auth');
+    Route::post('news/create', 'Admin\NewsController@create')->middleware('auth');
+    Route::get('news', 'Admin\NewsController@index')->middleware('auth');
+    Route::get('news/edit', 'Admin\NewsController@edit')->middleware('auth'); 
+    Route::post('news/edit', 'Admin\NewsController@update')->middleware('auth'); 
+    Route::get('news/delete', 'Admin\NewsController@delete')->middleware('auth');    
+});
