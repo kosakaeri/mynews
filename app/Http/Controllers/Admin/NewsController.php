@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use App\News;
+use App\History;
+use Carbon\Carbon;
 
 class NewsController extends Controller
 {
@@ -71,8 +72,10 @@ class NewsController extends Controller
   {
       // Validationをかける
       $this->validate($request, News::$rules);
+      
       // News Modelからデータを取得する
       $news = News::find($request->id);
+      
       // 送信されてきたフォームデータを格納する
       $news_form = $request->all();
       if (isset($news_form['image'])) {
@@ -88,6 +91,12 @@ class NewsController extends Controller
       // 該当するデータを上書きして保存する
       $news->fill($news_form)->save();
 
+      //時刻を扱うために Carbon という日付操作ライブラリを使用。Carbon を使って取得した現在時刻を、History モデルの edited_at として記録します。
+      $history = new History;
+      $history->news_id = $news->id;
+      $history->edited_at = Carbon::now();
+      $history->save();
+      
       return redirect('admin/news');
   }
   

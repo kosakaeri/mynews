@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
 use App\Profile;
+use App\ProfileHistory;
+use Carbon\Carbon;
 
 class ProfileController extends Controller
 {
@@ -57,7 +58,15 @@ class ProfileController extends Controller
         
       // 該当するデータを上書きして保存する
       $profiles->fill($profile_form)->save();
-      return redirect('admin/profile/edie');
+      
+       //時刻を扱うために Carbon という日付操作ライブラリを使用。Carbon を使って取得した現在時刻を、ProfileHistoryモデルの edited_at として記録します。
+      $history = new ProfileHistory;
+      $history->profile_id = $profiles->id;
+      $history->edited_at = Carbon::now();
+      $history->save();
+      
+      
+      return redirect('admin/profile/edit');
    }
    
    
