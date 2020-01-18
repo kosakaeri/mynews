@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 class ProfileHistory extends Model
-{
+  {
     protected $guarded = array('id');
 
     public static $rules = array(
@@ -15,11 +15,5 @@ class ProfileHistory extends Model
         'introduction' => 'required',
         
     );
-    
-    // Newsモデルに関連付けを行う
-    public function profile_histories()
-    {
-      return $this->hasMany('App\ProfileHistory');
-
-    }    
-}
+  }
+  
