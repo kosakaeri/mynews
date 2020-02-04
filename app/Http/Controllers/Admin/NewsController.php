@@ -58,7 +58,7 @@ class NewsController extends Controller
   
   
     public function edit(Request $request)
-  {
+  { 
       // News Modelからデータを取得する
       $news = News::find($request->id);
       if (empty($news)) {
